@@ -1,0 +1,1187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Developer documentation for the ATGA Gun System for Roblox.">
+<title>ATGA Gun System</title>
+<style>
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Layout: frosted sidebar index on the left, one reading column of grouped lists on the right; one column on phones */
+:root {
+  --bg: #f5f5f7;
+  --surface: #ffffff;
+  --fill: #f2f2f4;
+  --text: #1d1d1f;
+  --secondary: #6e6e73;
+  --tertiary: #8e8e93;
+  --separator: rgba(60, 60, 67, 0.14);
+  --accent: #0071e3;
+  --accent-tint: rgba(0, 113, 227, 0.09);
+  --orange: #c45500;
+  --orange-tint: rgba(255, 149, 0, 0.12);
+  --glass: rgba(245, 245, 247, 0.72);
+  --code-bg: #f5f5f7;
+  --code-text: #1d1d1f;
+  --tok-key: #ad3da4;
+  --tok-str: #c41a16;
+  --tok-num: #1c00cf;
+  --tok-com: #707f8c;
+  --tok-fn: #3e8087;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", "Segoe UI", Roboto, Arial, sans-serif;
+  --mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #000000;
+    --surface: #1c1c1e;
+    --fill: #2c2c2e;
+    --text: #f5f5f7;
+    --secondary: #a1a1a6;
+    --tertiary: #8e8e93;
+    --separator: rgba(84, 84, 88, 0.55);
+    --accent: #2997ff;
+    --accent-tint: rgba(41, 151, 255, 0.16);
+    --orange: #ff9f0a;
+    --orange-tint: rgba(255, 159, 10, 0.14);
+    --glass: rgba(22, 22, 24, 0.72);
+    --code-bg: #1c1c1e;
+    --code-text: #f5f5f7;
+    --tok-key: #fc5fa3;
+    --tok-str: #fc6a5d;
+    --tok-num: #d0bf69;
+    --tok-com: #7f8c98;
+    --tok-fn: #67b7a4;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #1c1c1e;
+  --fill: #2c2c2e;
+  --text: #f5f5f7;
+  --secondary: #a1a1a6;
+  --tertiary: #8e8e93;
+  --separator: rgba(84, 84, 88, 0.55);
+  --accent: #2997ff;
+  --accent-tint: rgba(41, 151, 255, 0.16);
+  --orange: #ff9f0a;
+  --orange-tint: rgba(255, 159, 10, 0.14);
+  --glass: rgba(22, 22, 24, 0.72);
+  --code-bg: #1c1c1e;
+  --code-text: #f5f5f7;
+  --tok-key: #fc5fa3;
+  --tok-str: #fc6a5d;
+  --tok-num: #d0bf69;
+  --tok-com: #7f8c98;
+  --tok-fn: #67b7a4;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+:focus-visible { outline: 3px solid var(--accent-tint); outline-offset: 1px; border-radius: 8px; box-shadow: 0 0 0 1px var(--accent); }
+
+.shell {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 56px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-block: 48px 120px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* Sidebar */
+nav.toc {
+  position: sticky;
+  top: calc(env(safe-area-inset-top, 0px) + 24px);
+  align-self: start;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 17px;
+  margin: 0 0 22px 10px;
+}
+.toc .mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: linear-gradient(160deg, #3d9bff, #0064d2);
+  display: grid;
+  place-items: center;
+  flex: none;
+}
+.toc .mark span { width: 14px; height: 3px; border-radius: 2px; background: #fff; box-shadow: 0 0 6px rgba(255, 255, 255, 0.9); }
+.toc ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; }
+.toc .group {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--tertiary);
+  margin: 18px 0 4px 10px;
+}
+.toc a {
+  display: block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 14px;
+}
+.toc a:hover { background: var(--fill); text-decoration: none; }
+.toc a.active { background: var(--accent-tint); color: var(--accent); font-weight: 600; }
+
+/* Search */
+.search { position: relative; margin: 0 0 16px; }
+.search input {
+  width: 100%;
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: -0.01em;
+  padding: 7px 34px 7px 32px;
+  border-radius: 9px;
+  border: 0.5px solid var(--separator);
+  background: var(--fill);
+  color: var(--text);
+  outline: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search input::placeholder { color: var(--tertiary); }
+.search input:focus { background: var(--surface); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+.search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.search .glass-icon { position: absolute; left: 10px; top: 9px; width: 14px; height: 14px; color: var(--tertiary); pointer-events: none; }
+.search .hint { position: absolute; right: 8px; top: 6px; font-size: 11px; min-width: 0; padding: 0 6px; color: var(--tertiary); pointer-events: none; }
+.search:focus-within .hint { display: none; }
+.results { margin-top: 8px; display: grid; gap: 1px; max-height: 70vh; overflow-y: auto; }
+.result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.result:hover, .result[aria-selected="true"] { background: var(--accent-tint); }
+.result .r-title { display: block; font-size: 14px; font-weight: 600; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.result .r-where { display: block; font-size: 11.5px; color: var(--tertiary); margin-top: 1px; }
+.result .r-snippet { display: block; font-size: 12.5px; color: var(--secondary); margin-top: 2px; line-height: 1.4; }
+.result mark { background: rgba(255, 204, 0, 0.38); color: inherit; border-radius: 3px; padding: 0 1px; }
+.results[hidden] { display: none; }
+.results .empty { padding: 10px; font-size: 13px; color: var(--secondary); }
+nav.toc.searching ol { display: none; }
+.flash { animation: flash 1.8s ease-out; border-radius: 8px; }
+@keyframes flash { 0%, 35% { background-color: var(--accent-tint); } 100% { background-color: transparent; } }
+@media (prefers-reduced-motion: reduce) { .flash { animation: none; outline: 2px solid var(--accent); } }
+
+/* Content */
+main { min-width: 0; max-width: 760px; }
+.hero { margin-bottom: 64px; }
+.hero .kicker { font-size: 15px; font-weight: 600; color: var(--accent); margin: 0 0 8px; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(36px, 6vw, 52px); line-height: 1.06; font-weight: 700; letter-spacing: -0.03em; }
+.hero p { font-size: 21px; line-height: 1.45; color: var(--secondary); margin: 18px 0 0; max-width: 34em; letter-spacing: -0.015em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+.chip { font-size: 13px; font-weight: 500; padding: 6px 12px; border-radius: 999px; background: var(--surface); color: var(--secondary); box-shadow: var(--shadow); border: 0.5px solid var(--separator); }
+
+section { margin-top: 80px; scroll-margin-top: 24px; }
+h2 { font-size: 32px; line-height: 1.12; font-weight: 700; letter-spacing: -0.025em; }
+.sub { font-size: 17px; color: var(--secondary); margin: 10px 0 0; max-width: 40em; }
+.path { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 12.5px; color: var(--tertiary); }
+h3 { font-size: 21px; font-weight: 600; letter-spacing: -0.02em; margin: 44px 0 0; }
+p { max-width: 40em; margin: 12px 0 0; }
+.small { font-size: 14px; color: var(--secondary); }
+
+code {
+  font-family: var(--mono);
+  font-size: 0.86em;
+  background: var(--fill);
+  padding: 2px 6px;
+  border-radius: 6px;
+  overflow-wrap: anywhere;
+}
+
+/* Grouped list (iOS settings style) */
+.list-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 28px 0 8px 16px;
+}
+.list {
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  margin-top: 16px;
+  overflow: hidden;
+}
+.list-label + .list { margin-top: 0; }
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 210px) minmax(0, 1fr);
+  gap: 6px 20px;
+  padding: 13px 16px;
+  position: relative;
+  align-items: baseline;
+}
+.row + .row::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 16px;
+  right: 0;
+  height: 0.5px;
+  background: var(--separator);
+}
+.row .k { font-family: var(--mono); font-size: 13.5px; font-weight: 500; min-width: 0; overflow-wrap: anywhere; }
+.row .v { font-size: 15px; color: var(--secondary); min-width: 0; }
+.row .v strong { color: var(--text); font-weight: 600; }
+.tag {
+  display: inline-block;
+  font-family: var(--font);
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin-left: 6px;
+  vertical-align: 1px;
+  letter-spacing: 0;
+}
+.tag.req { background: var(--accent-tint); color: var(--accent); }
+.tag.def { background: var(--fill); color: var(--secondary); font-family: var(--mono); font-weight: 500; }
+.tag.where { background: var(--fill); color: var(--secondary); }
+
+/* Code */
+.code {
+  position: relative;
+  margin-top: 16px;
+  background: var(--code-bg);
+  border-radius: 14px;
+  border: 0.5px solid var(--separator);
+}
+.code .name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--tertiary);
+  padding: 12px 18px 0;
+}
+.code pre {
+  margin: 0;
+  padding: 12px 18px 16px;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--code-text);
+  tab-size: 4;
+}
+.code pre code { background: none; padding: 0; font-size: inherit; border-radius: 0; }
+.copy {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-family: var(--font);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--surface);
+  border: 0.5px solid var(--separator);
+  border-radius: 999px;
+  padding: 4px 12px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+.code:hover .copy, .copy:focus-visible { opacity: 1; }
+@media (hover: none) { .copy { opacity: 1; } }
+.hljs-keyword, .hljs-built_in, .hljs-literal { color: var(--tok-key); font-weight: 600; }
+.hljs-string { color: var(--tok-str); }
+.hljs-number { color: var(--tok-num); }
+.hljs-comment { color: var(--tok-com); }
+.hljs-title, .hljs-title.function_ { color: var(--tok-fn); }
+
+/* Steps */
+.steps { list-style: none; counter-reset: s; padding: 0; margin: 20px 0 0; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+.steps li { counter-increment: s; position: relative; padding: 14px 16px 14px 58px; font-size: 15px; }
+.steps li + li::before { content: ""; position: absolute; top: 0; left: 58px; right: 0; height: 0.5px; background: var(--separator); }
+.steps li::after {
+  content: counter(s);
+  position: absolute;
+  left: 16px;
+  top: 13px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+}
+.steps .opt { color: var(--tertiary); font-size: 13px; font-weight: 500; }
+
+/* Callouts */
+.callout {
+  margin-top: 18px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: var(--accent-tint);
+  font-size: 15px;
+}
+.callout b { color: var(--accent); }
+.callout.warn { background: var(--orange-tint); }
+.callout.warn b { color: var(--orange); }
+
+/* Cards */
+.cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.card { background: var(--surface); border-radius: 14px; box-shadow: var(--shadow); padding: 18px; min-width: 0; }
+.card h4 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.015em; }
+.card p { font-size: 15px; color: var(--secondary); margin-top: 6px; }
+.card .glyph { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; margin-bottom: 12px; }
+.glyph.blue { background: var(--accent-tint); }
+.glyph.orange { background: var(--orange-tint); }
+.glyph svg { width: 18px; height: 18px; }
+
+kbd {
+  font-family: var(--font);
+  font-size: 12.5px;
+  font-weight: 500;
+  min-width: 26px;
+  text-align: center;
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 7px;
+  background: var(--fill);
+  border: 0.5px solid var(--separator);
+  box-shadow: 0 1px 0 var(--separator);
+}
+
+.tree { font-size: 12.5px; }
+
+@media (max-width: 860px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 0; padding-block: 0 80px; }
+  nav.toc {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    max-height: none;
+    margin: 0 calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+    padding: 10px max(16px, env(safe-area-inset-left, 0px));
+    background: var(--glass);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 0.5px solid var(--separator);
+  }
+  .toc .brand { display: none; }
+  .search { margin: 0 0 10px; }
+  .search .hint { display: none; }
+  .results { max-height: 55vh; }
+  .toc .group { display: none; }
+  .toc ol { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; }
+  .toc ol::-webkit-scrollbar { display: none; }
+  .toc a { white-space: nowrap; padding: 6px 12px; border-radius: 999px; font-size: 13px; background: var(--fill); }
+  .hero { margin: 36px 0 48px; }
+  section { margin-top: 60px; scroll-margin-top: 64px; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .cards { grid-template-columns: minmax(0, 1fr); }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--glass); }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="toc" aria-label="Sections">
+    <div class="brand"><span class="mark" aria-hidden="true"><span></span></span>ATGA Gun System</div>
+    <div class="search" role="search">
+      <svg class="glass-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="m11 11 3.5 3.5"/></svg>
+      <input id="doc-search" type="search" placeholder="Search docs" autocomplete="off" spellcheck="false" aria-label="Search the docs" aria-controls="search-results" aria-expanded="false" role="combobox">
+      <kbd class="hint">/</kbd>
+      <div id="search-results" class="results" role="listbox" hidden></div>
+    </div>
+    <ol>
+      <li class="group">Getting started</li>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#new-gun">Adding a gun</a></li>
+      <li><a href="#weapon-config">Weapon config</a></li>
+      <li class="group">Server</li>
+      <li><a href="#combat-api">Combat API</a></li>
+      <li><a href="#armor">Armor</a></li>
+      <li><a href="#teams">Team rules</a></li>
+      <li><a href="#combat-config">CombatConfig</a></li>
+      <li><a href="#bricks">Reflect &amp; Block</a></li>
+      <li class="group">Client</li>
+      <li><a href="#events">Client events</a></li>
+      <li><a href="#controls">Controls</a></li>
+      <li><a href="#movement">Movement</a></li>
+      <li class="group">Reference</li>
+      <li><a href="#attributes">Attributes</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <p class="kicker">Developer documentation</p>
+      <h1>ATGA Gun System</h1>
+      <p>Server-authoritative blasters with heat, scopes, akimbo and splash weapons, plus armor, team rules and one damage API shared by guns, NPCs and abilities.</p>
+      <div class="chips">
+        <span class="chip">Server-side hits</span>
+        <span class="chip">PC &amp; mobile</span>
+        <span class="chip">NPC-ready API</span>
+        <span class="chip">Armor &amp; teams</span>
+      </div>
+    </header>
+
+    <section id="overview">
+      <h2>Overview</h2>
+      <p class="sub">Bolts are simulated on the server and drawn on every client, so hits can't be faked.</p>
+      <p>Every gun is a normal <code>Tool</code> with a <code>WeaponConfig</code> module inside it. Anything that deals damage, including NPCs, explosions and your own abilities, goes through the same <code>Combat</code> module, so armor and team rules always behave the same way.</p>
+      <div class="code tree"><div class="name">Explorer</div><button class="copy" type="button">Copy</button><pre><code class="language-plaintext">ReplicatedStorage
+└─ GunReplicated
+   ├─ Command, Effects, Movement, CombatFeedback   RemoteEvents
+   ├─ Shared
+   │  ├─ WeaponConfig      defaults and validation for every gun
+   │  └─ MovementConfig    walk, run, crouch and roll settings
+   ├─ Client               camera, HUD, firing, scope, effects, touch buttons
+   └─ Assets
+      ├─ Projectiles       bolt models, chosen by name in WeaponConfig
+      ├─ ShootVFX          muzzle flashes
+      └─ ImpactEffects     BoltHit sparks, RocketExplosion
+
+ServerScriptService
+└─ GunServer
+   ├─ Modules
+   │  ├─ Combat            the public API
+   │  └─ CombatConfig      team lists and hooks
+   └─ Controllers
+      ├─ BlasterServer     validates and fires player shots
+      └─ MovementServer    run, crouch and roll rules
+
+StarterPlayerScripts       BlasterClient, MovementClient, ShiftLockKey
+StarterGui                 BlasterHUD, ScopeHUD, MobileControls</code></pre></div>
+    </section>
+
+    <section id="new-gun">
+      <h2>Adding a gun</h2>
+      <p class="sub">Five steps, and only the first three are required.</p>
+      <ol class="steps">
+        <li>Make a <code>Tool</code> with a <code>Handle</code> part. Give the tool a boolean attribute <code>HybridBlaster</code> set to <code>true</code>.</li>
+        <li>Put an <code>Attachment</code> named <code>Barrel</code> in the <code>Handle</code> where bolts should come out.</li>
+        <li>Add a <code>ModuleScript</code> named <code>WeaponConfig</code> inside the tool. List only what differs from the defaults.</li>
+        <li><span class="opt">Optional</span><br>Add sounds to the <code>Handle</code> named <code>ShootSound</code>, <code>AltShootSound</code>, <code>ZoomIn</code>, <code>Equip</code> or <code>Cooled</code>.</li>
+        <li><span class="opt">Optional</span><br>Set the tool attribute <code>OTSOnly</code> to <code>true</code> to lock it to over-the-shoulder view.</li>
+      </ol>
+      <div class="code"><div class="name">StarterPack › E-11 › WeaponConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	FireMode = "Auto",
+	Damage = 12,
+	HeadMultiplier = 1.5,
+	BoltSpeed = 1200,
+	FireInterval = 0.25,
+	HeatPerShot = 8,
+	MaxHeat = 100,
+	CoolTime = 2.25,
+	Projectile = "BlueLaser",
+	ShootVFX = "BlueMuzzle",
+}</code></pre></div>
+      <div class="callout"><b>Tip</b> If a config has a mistake, the gun won't equip and the output names the bad key, for example <code>E-11: invalid FireInterval</code>.</div>
+
+      <h3>Scoped guns</h3>
+      <p>Add <code>Scope</code> with zoom levels as field-of-view angles, widest first. Aiming in shows the scope overlay. The mouse wheel cycles levels on PC, and the ZOOM button does it on mobile.</p>
+      <div class="code"><div class="name">StarterPack › DC-15X › WeaponConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	FireMode = "Semi",
+	Damage = 60,
+	HeadMultiplier = 2.5,
+	Range = 2000,
+	BoltSpeed = 3500,
+	FireInterval = 1.2,
+	HeatPerShot = 34,
+	MaxHeat = 100,
+	CoolTime = 3.5,
+	Recoil = 0.06,
+	Projectile = "BigBlueLaser",
+	ShootVFX = "BlueMuzzle",
+	Scope = { 30, 15, 7 },
+}</code></pre></div>
+
+      <h3>Akimbo guns</h3>
+      <p>Set <code>Akimbo = true</code> and add a second part named <code>LeftHandle</code> next to <code>Handle</code>, with its own <code>Barrel</code>. Shots alternate right and left, and the left shot plays <code>FireLeft</code> if it exists.</p>
+      <div class="code"><div class="name">StarterPack › Dual DC-17 › WeaponConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	FireMode = "Auto",
+	Akimbo = true,
+	Damage = 15,
+	HeadMultiplier = 2,
+	Range = 400,
+	BoltSpeed = 1600,
+	FireInterval = 0.14,
+	HeatPerShot = 3,
+	MaxHeat = 100,
+	CoolTime = 3,
+	Projectile = "BlueLaser",
+	ShootVFX = "BlueMuzzle",
+
+	Animations = {
+		Idle = "rbxassetid://126613619082624",
+		Aim = "rbxassetid://103871745819612",
+		Fire = "rbxassetid://114525217796631",
+		FireLeft = "rbxassetid://83278996445281",
+		Reload = "rbxassetid://128264457888001",
+		Equip = "rbxassetid://108332311890851",
+	},
+}</code></pre></div>
+
+      <h3>Splash weapons</h3>
+      <p>Give a gun <code>SplashRadius</code> and its bolt explodes on impact, damaging everyone in range with falloff from the center. <code>SplashKnockback</code> shoves whoever it damages.</p>
+      <div class="code"><div class="name">StarterPack › RPS-6 › WeaponConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	FireMode = "Semi",
+	Damage = 90,
+	Reflectable = false,
+	BoltSpeed = 400,
+	FireInterval = 1,
+	HeatPerShot = 100,
+	MaxHeat = 100,
+	CoolTime = 12.5,
+	SplashRadius = 19,
+	SplashMinDamage = 90,
+	SplashKnockback = 75,
+	Recoil = 0.16,
+	ProjectileAcceleration = Vector3.new(0, -24, 0),
+	Projectile = "RPS6Rocket",
+	ShootVFX = "RPS6Muzzle",
+}</code></pre></div>
+
+      <h3>Shotguns</h3>
+      <p>Set <code>FireMode = "Shotgun"</code> and each click fires a spread of bolts. <code>Pellets</code> sets how many bolts each shell fires, and <code>Spread</code> sets the width of the cone in degrees. Each pellet deals the full <code>Damage</code>, and heat is added once per shell.</p>
+      <div class="code"><div class="name">Example · shotgun WeaponConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	FireMode = "Shotgun",
+	Pellets = 8,
+	Spread = 6,
+	Damage = 9,
+	Range = 120,
+	BoltSpeed = 1400,
+	FireInterval = 0.8,
+	HeatPerShot = 25,
+	MaxHeat = 100,
+	CoolTime = 3,
+	Projectile = "BlueLaser",
+	ShootVFX = "BlueMuzzle",
+}</code></pre></div>
+    </section>
+
+    <section id="weapon-config">
+      <h2>Weapon config</h2>
+      <p class="sub">Every key a gun can set. Anything you leave out uses the default.</p>
+      <span class="path">GunReplicated.Shared.WeaponConfig</span>
+
+      <div class="list-label">Fire mode</div>
+      <div class="list">
+        <div class="row"><span class="k">FireMode<span class="tag def">"Auto"</span></span><span class="v"><strong>"Auto"</strong> keeps firing while the trigger is held. <strong>"Semi"</strong> fires once per click. <strong>"Shotgun"</strong> fires a spread of pellets once per click.</span></div>
+        <div class="row"><span class="k">Pellets<span class="tag def">8</span></span><span class="v">Shotgun only. How many bolts each shell fires, from 1 to 30.</span></div>
+        <div class="row"><span class="k">Spread<span class="tag def">6</span></span><span class="v">Shotgun only. Width of the pellet cone in degrees, from 0 to 45.</span></div>
+      </div>
+
+      <div class="list-label">Combat</div>
+      <div class="list">
+        <div class="row"><span class="k">Damage<span class="tag req">Required</span></span><span class="v">Damage per bolt. For shotguns, damage per pellet.</span></div>
+        <div class="row"><span class="k">BoltSpeed<span class="tag req">Required</span></span><span class="v">Studs per second.</span></div>
+        <div class="row"><span class="k">FireInterval<span class="tag req">Required</span></span><span class="v">Seconds between shots. Holding the trigger fires at this rate.</span></div>
+        <div class="row"><span class="k">HeatPerShot<span class="tag req">Required</span></span><span class="v">Heat added per shot.</span></div>
+        <div class="row"><span class="k">MaxHeat<span class="tag req">Required</span></span><span class="v">The gun overheats and stops firing at this heat.</span></div>
+        <div class="row"><span class="k">CoolTime<span class="tag req">Required</span></span><span class="v">Seconds a cool-down takes.</span></div>
+        <div class="row"><span class="k">HeadMultiplier<span class="tag def">1</span></span><span class="v">Damage multiplier for headshots.</span></div>
+        <div class="row"><span class="k">Range<span class="tag def">1000</span></span><span class="v">Studs a bolt travels before it disappears.</span></div>
+        <div class="row"><span class="k">IgnoreArmor<span class="tag def">false</span></span><span class="v">Bolts skip armor and hit health directly.</span></div>
+        <div class="row"><span class="k">Reflectable<span class="tag def">true</span></span><span class="v">Whether bolts bounce off Reflect bricks. Set false for rockets.</span></div>
+        <div class="row"><span class="k">SplashRadius<span class="tag def">nil</span></span><span class="v">Makes the bolt explode on impact with this radius.</span></div>
+        <div class="row"><span class="k">SplashMinDamage<span class="tag def">0</span></span><span class="v">Damage at the edge of the blast.</span></div>
+        <div class="row"><span class="k">SplashKnockback<span class="tag def">0</span></span><span class="v">How hard the blast shoves anyone it damages, in studs per second.</span></div>
+        <div class="row"><span class="k">ProjectileAcceleration</span><span class="v">Constant acceleration on the bolt, like gravity drop for rockets. Defaults to none.</span></div>
+        <div class="row"><span class="k">Akimbo<span class="tag def">false</span></span><span class="v">Two guns with alternating shots. Needs a <code>LeftHandle</code>.</span></div>
+      </div>
+
+      <div class="list-label">Visuals</div>
+      <div class="list">
+        <div class="row"><span class="k">Projectile<span class="tag def">"RedLaser"</span></span><span class="v">Name of a model in <code>Assets.Projectiles</code>.</span></div>
+        <div class="row"><span class="k">ShootVFX<span class="tag def">"RedMuzzle"</span></span><span class="v">Name in <code>Assets.ShootVFX</code>, or <code>false</code> for no muzzle flash.</span></div>
+        <div class="row"><span class="k">BoltColor<span class="tag def">nil</span></span><span class="v">A <code>Color3</code> that tints the bolt and muzzle flash.</span></div>
+        <div class="row"><span class="k">Recoil<span class="tag def">0.009</span></span><span class="v">Camera kick per shot. Stacks up to three shots.</span></div>
+        <div class="row"><span class="k">Scope<span class="tag def">nil</span></span><span class="v">List of zoom FOVs. Makes the gun scoped.</span></div>
+      </div>
+
+      <div class="list-label">Camera</div>
+      <div class="list">
+        <div class="row"><span class="k">NormalFOV<span class="tag def">72</span></span><span class="v">Field of view when not aiming.</span></div>
+        <div class="row"><span class="k">AimFOV<span class="tag def">58</span></span><span class="v">Field of view while aiming.</span></div>
+        <div class="row"><span class="k">HipDistance<span class="tag def">7</span></span><span class="v">Over-the-shoulder camera distance before aiming. The mouse wheel changes it, between <code>MinHipDistance</code> (5) and <code>MaxHipDistance</code> (20).</span></div>
+        <div class="row"><span class="k">AimDistance<span class="tag def">6.25</span></span><span class="v">Camera distance while aiming.</span></div>
+        <div class="row"><span class="k">HipOffset · AimOffset</span><span class="v">Camera offset from the character. Defaults to <code>(0, 0, 0)</code> and <code>(2.9, 0.85, 0)</code>. X flips with the shoulder swap.</span></div>
+        <div class="row"><span class="k">MouseSensitivity<span class="tag def">0.0035</span></span><span class="v">Look speed with a mouse.</span></div>
+        <div class="row"><span class="k">TouchSensitivity<span class="tag def">0.006</span></span><span class="v">Look speed on touch screens.</span></div>
+        <div class="row"><span class="k">TPSLowerDelay<span class="tag def">1</span></span><span class="v">Seconds the gun stays raised after firing in third person.</span></div>
+      </div>
+
+      <div class="list-label">Animations</div>
+      <div class="list">
+        <div class="row"><span class="k">Idle</span><span class="v">Holding the gun lowered.</span></div>
+        <div class="row"><span class="k">Aim</span><span class="v">Aiming, or right after firing in third person.</span></div>
+        <div class="row"><span class="k">Fire · FireLeft</span><span class="v">Each shot. <code>FireLeft</code> is the left hand on akimbo guns.</span></div>
+        <div class="row"><span class="k">Reload</span><span class="v">During a cool-down.</span></div>
+        <div class="row"><span class="k">Equip · Unequip</span><span class="v">Taking the gun out and putting it away.</span></div>
+      </div>
+      <p class="small">Each slot takes an asset id. Leave one as <code>""</code> to skip it. <code>AnimationFadeTime</code> (0.12) sets the blend time.</p>
+    </section>
+
+    <section id="combat-api">
+      <h2>Combat API</h2>
+      <p class="sub">Server only. Deal damage or fire bolts from any server script with the same rules the blasters use.</p>
+      <span class="path">GunServer.Modules.Combat</span>
+      <div class="code"><div class="name">Server Script</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">local ServerScriptService = game:GetService("ServerScriptService")
+local Combat = require(ServerScriptService.GunServer.Modules.Combat)</code></pre></div>
+
+      <h3>Damage</h3>
+      <p><code>Combat.Damage(attacker, target, amount, options?)</code></p>
+      <p>Armor takes the hit first and the rest goes to health. The attacker can be a <code>Player</code>, an NPC model, or <code>nil</code> for environment damage. The target can be a <code>Player</code>, a character, or any part inside one.</p>
+      <div class="list-label">Options</div>
+      <div class="list">
+        <div class="row"><span class="k">IgnoreArmor</span><span class="v">Skip armor and hit health directly.</span></div>
+        <div class="row"><span class="k">Headshot</span><span class="v">Passed to hooks and the client for the hitmarker color.</span></div>
+        <div class="row"><span class="k">Position</span><span class="v">Where the hit landed, for damage numbers. Defaults to the target's root.</span></div>
+        <div class="row"><span class="k">Source</span><span class="v">The weapon or thing that caused it, for your own hooks.</span></div>
+      </div>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">local result = Combat.Damage(npcModel, player, 25)
+
+if result.Applied then
+	print("armor took", result.ArmorDamage, "health took", result.HealthDamage)
+else
+	print("blocked:", result.Reason)
+end
+
+-- a melee hit that goes straight through armor
+Combat.Damage(player, npcModel, 40, { IgnoreArmor = true, Source = saberTool })</code></pre></div>
+
+      <div class="list-label">Why a hit can be blocked · result.Reason</div>
+      <div class="list">
+        <div class="row"><span class="k">InvalidTarget</span><span class="v">No living humanoid, or not in the workspace.</span></div>
+        <div class="row"><span class="k">InvalidAmount</span><span class="v">The amount isn't a positive number.</span></div>
+        <div class="row"><span class="k">CivilianProtected</span><span class="v">Target is a civilian without <code>KOS</code>.</span></div>
+        <div class="row"><span class="k">CivilianRaider</span><span class="v">A raider and a civilian tried to hurt each other.</span></div>
+        <div class="row"><span class="k">SelfDamage</span><span class="v">Attacker and target are the same character.</span></div>
+        <div class="row"><span class="k">SameTeam</span><span class="v">Same team, or both Republic, and the attacker lacks <code>CanTeamKill</code>.</span></div>
+        <div class="row"><span class="k">ForceField</span><span class="v">The target has a ForceField.</span></div>
+        <div class="row"><span class="k">NoDamage</span><span class="v">Nothing actually changed.</span></div>
+      </div>
+
+      <div class="list-label">Result fields · also passed to OnDamaged and OnKilled</div>
+      <div class="list">
+        <div class="row"><span class="k">Damage</span><span class="v">Armor plus health damage dealt.</span></div>
+        <div class="row"><span class="k">ArmorDamage · HealthDamage</span><span class="v">The split between the two.</span></div>
+        <div class="row"><span class="k">ArmorBroken</span><span class="v">This hit took armor to zero.</span></div>
+        <div class="row"><span class="k">ArmorRemaining · HealthRemaining</span><span class="v">Values after the hit.</span></div>
+        <div class="row"><span class="k">Killed · Headshot</span><span class="v">What happened on this hit.</span></div>
+        <div class="row"><span class="k">Reflected · IgnoreArmor</span><span class="v"><code>Reflected</code> means the bolt bounced off a Reflect brick first.</span></div>
+        <div class="row"><span class="k">Attacker · AttackerPlayer</span><span class="v"><code>AttackerPlayer</code> is nil for NPCs. Also <code>AttackerIsPlayer</code>, <code>AttackerName</code>, <code>AttackerUserId</code>.</span></div>
+        <div class="row"><span class="k">Target · TargetPlayer</span><span class="v"><code>Target</code> is the character model. Also <code>TargetIsPlayer</code>, <code>TargetName</code>, <code>TargetUserId</code>, <code>Humanoid</code>.</span></div>
+        <div class="row"><span class="k">Source · Position</span><span class="v">Whatever was passed in, and where the hit landed.</span></div>
+      </div>
+
+      <h3>CanDamage</h3>
+      <p><code>Combat.CanDamage(attacker, target)</code> returns <code>allowed, reason</code> using the team and civilian rules, without dealing damage. Handy for NPC targeting.</p>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">for _, player in Players:GetPlayers() do
+	if Combat.CanDamage(npcModel, player) then
+		-- worth shooting at
+	end
+end</code></pre></div>
+
+      <h3>SplashDamage</h3>
+      <p><code>Combat.SplashDamage(attacker, center, radius, damage, options?)</code></p>
+      <p>Full damage at the center, falling off to <code>MinDamage</code> at the edge. Each target goes through <code>Combat.Damage</code>, so armor and team rules still apply. Returns a list of successful results.</p>
+      <div class="list-label">Options</div>
+      <div class="list">
+        <div class="row"><span class="k">MinDamage<span class="tag def">0</span></span><span class="v">Damage at the edge of the radius.</span></div>
+        <div class="row"><span class="k">LineOfSight<span class="tag def">true</span></span><span class="v">Walls between the center and a target block the damage.</span></div>
+        <div class="row"><span class="k">IgnoreArmor<span class="tag def">false</span></span><span class="v">Skip armor.</span></div>
+        <div class="row"><span class="k">Ignore<span class="tag def">{}</span></span><span class="v">Instances to leave out.</span></div>
+        <div class="row"><span class="k">Source</span><span class="v">Passed to hooks.</span></div>
+      </div>
+      <div class="code"><div class="name">Example · thermal detonator</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">local hits = Combat.SplashDamage(player, grenade.Position, 15, 80, {
+	MinDamage = 20,
+	Source = grenade,
+})
+print(#hits, "targets hit")</code></pre></div>
+
+      <h3>FireBolt</h3>
+      <p><code>Combat.FireBolt(options)</code> returns the bolt's id.</p>
+      <p>Fires the same bolt the player blasters use. It's simulated on the server, drawn on every client, bounces off Reflect bricks and triggers the usual hit feedback.</p>
+      <div class="list-label">Options</div>
+      <div class="list">
+        <div class="row"><span class="k">Origin<span class="tag req">Required</span></span><span class="v">Where the bolt starts.</span></div>
+        <div class="row"><span class="k">Direction<span class="tag req">Required</span></span><span class="v">Which way it flies. Doesn't need to be a unit vector.</span></div>
+        <div class="row"><span class="k">Config or Weapon<span class="tag req">Required</span></span><span class="v"><code>Config</code> needs <code>Damage</code>, <code>BoltSpeed</code> and <code>Range</code>, and accepts any combat or visual key above. Add <code>Pellets</code> and <code>Spread</code> for a shotgun blast. Or pass a <code>Weapon</code> tool with a <code>WeaponConfig</code>.</span></div>
+        <div class="row"><span class="k">Attacker</span><span class="v">Who gets credit. A Player, an NPC model, or nil.</span></div>
+        <div class="row"><span class="k">Ignore</span><span class="v">Instances the bolt passes through, like the NPC's own model.</span></div>
+        <div class="row"><span class="k">IgnoreArmor</span><span class="v">Force armor-piercing for this shot.</span></div>
+        <div class="row"><span class="k">Source</span><span class="v">Passed to hooks. Defaults to the weapon, then the attacker.</span></div>
+      </div>
+      <div class="code"><div class="name">Example · NPC trooper</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">local muzzle = npcModel.Blaster.Barrel.WorldPosition
+local target = player.Character.HumanoidRootPart
+
+Combat.FireBolt({
+	Attacker = npcModel,
+	Origin = muzzle,
+	Direction = target.Position - muzzle,
+	Config = {
+		Damage = 15,
+		BoltSpeed = 900,
+		Range = 500,
+		Projectile = "RedLaser",
+		ShootVFX = "RedMuzzle",
+	},
+	Ignore = { npcModel },
+})</code></pre></div>
+
+      <h3>SetArmor</h3>
+      <p><code>Combat.SetArmor(target, amount, maxArmor?)</code> sets armor and the maximum it refills to. Without <code>maxArmor</code>, the maximum equals <code>amount</code>.</p>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">Combat.SetArmor(player, 50)        -- 50 armor, refills to 50
+Combat.SetArmor(player, 25, 100)   -- 25 now, refills to 100</code></pre></div>
+    </section>
+
+    <section id="armor">
+      <h2>Armor</h2>
+      <p class="sub">A second health bar that soaks damage first and refills on its own.</p>
+      <div class="list">
+        <div class="row"><span class="k">Refill</span><span class="v">After <strong>30 seconds</strong> without damage, armor refills to its maximum. Every hit restarts the timer.</span></div>
+        <div class="row"><span class="k">Starting value</span><span class="v">0, unless the character has an <code>Armor</code> attribute.</span></div>
+        <div class="row"><span class="k">Setting it</span><span class="v"><code>Combat.SetArmor</code>, or the <code>Armor</code> and <code>MaxArmor</code> attributes.</span></div>
+        <div class="row"><span class="k">Piercing</span><span class="v">Hits with <code>IgnoreArmor</code> leave armor alone and go straight to health.</span></div>
+        <div class="row"><span class="k">Feedback</span><span class="v">Armor hits get their own hitmarker color, and client events include <code>ArmorDamage</code>.</span></div>
+      </div>
+    </section>
+
+    <section id="teams">
+      <h2>Team rules</h2>
+      <p class="sub">Checked on every hit: bolts, splash and direct <code>Combat.Damage</code> calls.</p>
+      <p>Players use their Roblox Team. NPCs use a <code>Team</code> string attribute on their model.</p>
+      <div class="list">
+        <div class="row"><span class="k">Civilians</span><span class="v">Can't be damaged by anyone. <strong>Override:</strong> <code>KOS</code> on the civilian.</span></div>
+        <div class="row"><span class="k">Raiders × Civilians</span><span class="v">Can't damage each other, in either direction.</span></div>
+        <div class="row"><span class="k">Same team</span><span class="v">Can't damage each other. <strong>Override:</strong> <code>CanTeamKill</code> on the attacker.</span></div>
+        <div class="row"><span class="k">Republic</span><span class="v">Every team in <code>RepublicTeams</code> is one side, so they can't damage each other. <strong>Override:</strong> <code>CanTeamKill</code>.</span></div>
+        <div class="row"><span class="k">Reflected bolts</span><span class="v">Ignore every rule above and can hit anyone, including the shooter.</span></div>
+      </div>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">player:SetAttribute("KOS", true)          -- this civilian can now be shot
+player:SetAttribute("CanTeamKill", true)  -- this player can hurt their own side
+npcModel:SetAttribute("Team", "Raider")   -- NPC team</code></pre></div>
+    </section>
+
+    <section id="combat-config">
+      <h2>CombatConfig</h2>
+      <p class="sub">Team lists, armor timing and the hooks that run on every hit.</p>
+      <span class="path">GunServer.Modules.CombatConfig</span>
+      <div class="code"><div class="name">CombatConfig</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">return {
+	ArmorRestoreDelay = 30,
+	CivilianTeams = { "Civilian" },
+	RaiderTeams = { "Raider" },
+	RepublicTeams = { "Republic" },
+	MaxReflections = 8,
+
+	OnReflected = function(context) end,
+	OnDamaged = function(context) end,
+	OnKilled = function(context) end,
+}</code></pre></div>
+      <div class="list">
+        <div class="row"><span class="k">ArmorRestoreDelay</span><span class="v">Seconds without damage before armor refills.</span></div>
+        <div class="row"><span class="k">CivilianTeams</span><span class="v">Team names treated as civilians.</span></div>
+        <div class="row"><span class="k">RaiderTeams</span><span class="v">Team names treated as raiders.</span></div>
+        <div class="row"><span class="k">RepublicTeams</span><span class="v">Team names that all count as one side. Add every Republic division here.</span></div>
+        <div class="row"><span class="k">MaxReflections</span><span class="v">The most times one bolt can bounce. After that it hits like a wall.</span></div>
+      </div>
+      <p class="small">Names in these lists ignore capitals, so "republic" matches "Republic".</p>
+
+      <h3>Hooks</h3>
+      <p><code>OnDamaged</code> and <code>OnKilled</code> receive the result table from <code>Combat.Damage</code>. They run after the hit, and an error inside one is printed without breaking combat.</p>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">OnKilled = function(context)
+	if context.TargetIsPlayer and context.AttackerPlayer then
+		-- give the killer credits, update a leaderboard, etc
+		print(context.AttackerPlayer.Name, "killed", context.TargetName)
+	end
+end,
+
+OnDamaged = function(context)
+	if context.ArmorBroken then
+		print(context.TargetName, "lost their armor")
+	end
+end,</code></pre></div>
+      <p><code>OnReflected</code> runs each time a bolt bounces, with <code>Part</code>, <code>Position</code>, <code>Normal</code>, <code>IncomingDirection</code>, <code>OutgoingDirection</code>, <code>Count</code>, <code>Attacker</code>, <code>AttackerPlayer</code>, <code>Source</code> and <code>BoltId</code>.</p>
+    </section>
+
+    <section id="bricks">
+      <h2>Reflect &amp; Block</h2>
+      <p class="sub">Bolts pass through parts with CanCollide off. Two attributes change that.</p>
+      <div class="cards">
+        <div class="card">
+          <div class="glyph blue" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent)"><path d="M4 18 L12 8 L20 18"/><path d="M3 21h18"/></svg></div>
+          <h4>Reflect = true</h4>
+          <p>Bolts bounce off like a mirror, collision or not. Rockets with <code>Reflectable = false</code> hit it instead.</p>
+        </div>
+        <div class="card">
+          <div class="glyph orange" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--orange)"><path d="M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6l-8-3Z"/></svg></div>
+          <h4>Block = true</h4>
+          <p>Stops bolts even with CanCollide off, like an invisible energy shield. Sparks show where they stop.</p>
+        </div>
+      </div>
+      <div class="code"><div class="name">Example</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">shieldPart.CanCollide = false
+shieldPart:SetAttribute("Block", true)
+
+mirrorPart:SetAttribute("Reflect", true)</code></pre></div>
+    </section>
+
+    <section id="events">
+      <h2>Client events</h2>
+      <p class="sub">Signals for the local player, each with the same context table as the server hooks.</p>
+      <span class="path">GunReplicated.Client.CombatEvents</span>
+      <div class="list">
+        <div class="row"><span class="k">Damaged</span><span class="v">You hit someone. Check <code>ArmorDamage</code> to see if armor took it.</span></div>
+        <div class="row"><span class="k">Killed</span><span class="v">You killed someone.</span></div>
+        <div class="row"><span class="k">DamageTaken</span><span class="v">Someone hit you.</span></div>
+        <div class="row"><span class="k">Died</span><span class="v">Someone killed you.</span></div>
+      </div>
+      <div class="code"><div class="name">LocalScript</div><button class="copy" type="button">Copy</button><pre><code class="language-lua">local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CombatEvents = require(ReplicatedStorage.GunReplicated.Client.CombatEvents)
+
+CombatEvents.Died:Connect(function(context)
+	print("killed by", context.AttackerName)
+end)
+
+CombatEvents.Damaged:Connect(function(context)
+	if context.ArmorDamage > 0 then
+		print("hit their armor for", context.ArmorDamage)
+	end
+end)</code></pre></div>
+    </section>
+
+    <section id="controls">
+      <h2>Controls</h2>
+      <p class="sub">The same actions on PC and mobile.</p>
+      <div class="list-label">PC</div>
+      <div class="list">
+        <div class="row"><span class="k"><kbd>Left click</kbd></span><span class="v">Fire. Hold to keep firing on Auto guns.</span></div>
+        <div class="row"><span class="k"><kbd>Right click</kbd></span><span class="v">Aim, over the shoulder.</span></div>
+        <div class="row"><span class="k"><kbd>R</kbd></span><span class="v">Cool down.</span></div>
+        <div class="row"><span class="k"><kbd>X</kbd></span><span class="v">Switch third person and over the shoulder.</span></div>
+        <div class="row"><span class="k"><kbd>T</kbd></span><span class="v">Swap shoulder.</span></div>
+        <div class="row"><span class="k"><kbd>Scroll</kbd></span><span class="v">Camera distance, or scope zoom.</span></div>
+        <div class="row"><span class="k"><kbd>Shift</kbd></span><span class="v">Run while held.</span></div>
+        <div class="row"><span class="k"><kbd>C</kbd> · <kbd>Q</kbd></span><span class="v">Crouch · Roll.</span></div>
+        <div class="row"><span class="k"><kbd>Ctrl</kbd></span><span class="v">Shift lock.</span></div>
+        <div class="row"><span class="k"><kbd>H</kbd></span><span class="v">Hide the keybind panel.</span></div>
+      </div>
+      <div class="list-label">Mobile</div>
+      <div class="list">
+        <div class="row"><span class="k">Third person</span><span class="v">Hold a finger anywhere in the world to fire at it.</span></div>
+        <div class="row"><span class="k">Over the shoulder</span><span class="v">Hold the fire zone on the right. It aims you in, and dragging still turns the camera.</span></div>
+        <div class="row"><span class="k">Movement</span><span class="v">Sprint and crouch sit beside the thumbstick.</span></div>
+        <div class="row"><span class="k">Around jump</span><span class="v">Aim, reload, roll, swap shoulder and the camera toggle. Swap becomes ZOOM while scoped.</span></div>
+      </div>
+      <p class="small">Edit the fire zone, sprint and crouch in <code>StarterGui.MobileControls</code>. The buttons around jump are positioned in <code>GunReplicated.Client.TouchButtons</code>.</p>
+    </section>
+
+    <section id="movement">
+      <h2>Movement</h2>
+      <p class="sub">Speeds, roll timing and keys.</p>
+      <span class="path">GunReplicated.Shared.MovementConfig</span>
+      <div class="list">
+        <div class="row"><span class="k">WalkSpeed<span class="tag def">14</span></span><span class="v">Normal walking speed.</span></div>
+        <div class="row"><span class="k">RunSpeed<span class="tag def">23</span></span><span class="v">Running speed. You can't fire while running.</span></div>
+        <div class="row"><span class="k">CrouchSpeed<span class="tag def">7</span></span><span class="v">Crouch walking speed.</span></div>
+        <div class="row"><span class="k">AimSpeed<span class="tag def">10</span></span><span class="v">Walking speed while aiming.</span></div>
+        <div class="row"><span class="k">TurnSpeed<span class="tag def">12</span></span><span class="v">How fast the character turns toward movement over the shoulder.</span></div>
+        <div class="row"><span class="k">RollSpeed<span class="tag def">30</span></span><span class="v">Starting roll speed. It eases down through the roll.</span></div>
+        <div class="row"><span class="k">RollDuration<span class="tag def">0.6</span></span><span class="v">Seconds a roll lasts.</span></div>
+        <div class="row"><span class="k">RollCooldown<span class="tag def">1.6</span></span><span class="v">Seconds between rolls.</span></div>
+        <div class="row"><span class="k">RunKey · CrouchKey · RollKey</span><span class="v">Shift, C and Q.</span></div>
+        <div class="row"><span class="k">Animations</span><span class="v">Idle, Walk, Run, CrouchIdle, CrouchWalk and Roll, plus optional Jump, Fall, Land, Swim and Climb.</span></div>
+      </div>
+      <p class="small">You can't roll in the air, while aiming or while cooling down.</p>
+    </section>
+
+    <section id="attributes">
+      <h2>Attributes</h2>
+      <p class="sub">Everything the system reads or writes, and where it goes.</p>
+      <div class="list-label">You set these</div>
+      <div class="list">
+        <div class="row"><span class="k">HybridBlaster<span class="tag where">Tool</span></span><span class="v"><code>true</code> marks a tool as a blaster.</span></div>
+        <div class="row"><span class="k">OTSOnly<span class="tag where">Tool</span></span><span class="v">Locks the gun to over-the-shoulder view.</span></div>
+        <div class="row"><span class="k">Armor · MaxArmor<span class="tag where">Character</span></span><span class="v">Current armor and the value it refills to.</span></div>
+        <div class="row"><span class="k">KOS<span class="tag where">Player</span></span><span class="v">Lets a civilian be damaged.</span></div>
+        <div class="row"><span class="k">CanTeamKill<span class="tag where">Player</span></span><span class="v">Lets this player damage their own team and the Republic side.</span></div>
+        <div class="row"><span class="k">Team<span class="tag where">NPC model</span></span><span class="v">Team name for NPCs.</span></div>
+        <div class="row"><span class="k">Reflect<span class="tag where">Part</span></span><span class="v">Bolts bounce off this part.</span></div>
+        <div class="row"><span class="k">Block<span class="tag where">Part</span></span><span class="v">Bolts stop at this part even with collision off.</span></div>
+      </div>
+      <div class="list-label">Read only</div>
+      <div class="list">
+        <div class="row"><span class="k">Heat · CoolingStart<span class="tag where">Tool</span></span><span class="v">Live gun state from the server. Also <code>CoolingEnd</code>, <code>Aiming</code> and <code>ViewMode</code>.</span></div>
+        <div class="row"><span class="k">MovementState<span class="tag where">Character</span></span><span class="v">"Walk", "Run", "Crouch" or "Roll".</span></div>
+      </div>
+      <div class="callout warn"><b>Heads up</b> <code>KOS</code> and <code>CanTeamKill</code> go on the Player, not the character, so they survive respawns. For NPCs, put them on the model.</div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script>
+(function () {
+  if (window.hljs) {
+    document.querySelectorAll("pre code.language-lua").forEach(function (block) {
+      window.hljs.highlightElement(block);
+    });
+  }
+
+  document.querySelectorAll(".code").forEach(function (box) {
+    var button = box.querySelector(".copy");
+    var code = box.querySelector("pre code");
+    if (!button || !code) return;
+    button.addEventListener("click", function () {
+      var reset = function (label) {
+        button.textContent = label;
+        setTimeout(function () { button.textContent = "Copy"; }, 1400);
+      };
+      var select = function () {
+        var range = document.createRange();
+        range.selectNodeContents(code);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        reset("Selected");
+      };
+      try {
+        navigator.clipboard.writeText(code.innerText).then(function () { reset("Copied"); }, select);
+      } catch (e) {
+        select();
+      }
+    });
+  });
+
+  var nav = document.querySelector("nav.toc");
+  var input = document.getElementById("doc-search");
+  var resultsBox = document.getElementById("search-results");
+  var MaxResults = 12;
+  var SnippetRadius = 48;
+
+  function clean(text) {
+    return text.replace(/\s+/g, " ").trim();
+  }
+
+  function ownText(element) {
+    var first = element.childNodes[0];
+    return clean(first && first.nodeType === 3 ? first.textContent : element.textContent);
+  }
+
+  var entries = [];
+  document.querySelectorAll("main section").forEach(function (section) {
+    var heading = section.querySelector("h2");
+    var sectionTitle = clean(heading.textContent);
+    var sub = section.querySelector(".sub");
+    entries.push({ el: heading, title: sectionTitle, where: "Section", text: sub ? clean(sub.textContent) : "" });
+
+    var group = sectionTitle;
+    var stepNumber = 0;
+    section.querySelectorAll("h3, .list-label, .row, .card, .steps li, main section > p:not(.sub)").forEach(function (el) {
+      if (el.matches("h3")) {
+        group = clean(el.textContent);
+        var next = el.nextElementSibling;
+        entries.push({ el: el, title: group, where: sectionTitle, text: next && next.matches("p") ? clean(next.textContent) : "" });
+      } else if (el.matches(".list-label")) {
+        group = clean(el.textContent);
+      } else if (el.matches(".row")) {
+        entries.push({ el: el, title: ownText(el.querySelector(".k")), where: sectionTitle + " › " + group, text: clean(el.querySelector(".v").textContent) });
+      } else if (el.matches(".card")) {
+        entries.push({ el: el, title: clean(el.querySelector("h4").textContent), where: sectionTitle, text: clean(el.querySelector("p").textContent) });
+      } else if (el.matches(".steps li")) {
+        stepNumber += 1;
+        entries.push({ el: el, title: "Step " + stepNumber, where: sectionTitle, text: clean(el.textContent) });
+      } else if (!(el.previousElementSibling && el.previousElementSibling.matches("h3"))) {
+        entries.push({ el: el, title: group, where: sectionTitle, text: clean(el.textContent) });
+      }
+    });
+  });
+
+  function escapeHtml(text) {
+    return text.replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
+    });
+  }
+
+  function highlight(text, words) {
+    var html = escapeHtml(text);
+    words.forEach(function (word) {
+      var pattern = new RegExp("(" + escapeHtml(word).replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+      html = html.replace(pattern, "<mark>$1</mark>");
+    });
+    return html;
+  }
+
+  function snippet(text, word) {
+    var at = text.toLowerCase().indexOf(word);
+    if (at < 0 || text.length <= SnippetRadius * 2) return text.slice(0, SnippetRadius * 2);
+    var start = Math.max(0, at - SnippetRadius);
+    var end = Math.min(text.length, at + word.length + SnippetRadius);
+    return (start > 0 ? "…" : "") + text.slice(start, end) + (end < text.length ? "…" : "");
+  }
+
+  function score(entry, words) {
+    var title = entry.title.toLowerCase();
+    var all = (title + " " + entry.text + " " + entry.where).toLowerCase();
+    if (!words.every(function (w) { return all.indexOf(w) >= 0; })) return 0;
+    var first = words[0];
+    if (title === first) return 4;
+    if (title.indexOf(first) === 0) return 3;
+    if (title.indexOf(first) >= 0) return 2;
+    return 1;
+  }
+
+  var matches = [];
+  var selected = 0;
+
+  function select(index) {
+    selected = index;
+    resultsBox.querySelectorAll(".result").forEach(function (button, i) {
+      var isSelected = i === index;
+      button.setAttribute("aria-selected", isSelected ? "true" : "false");
+      if (isSelected) button.scrollIntoView({ block: "nearest" });
+    });
+  }
+
+  function closeResults() {
+    nav.classList.remove("searching");
+    resultsBox.hidden = true;
+    input.setAttribute("aria-expanded", "false");
+  }
+
+  function jumpTo(entry) {
+    closeResults();
+    input.blur();
+    entry.el.scrollIntoView({ block: "center", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    entry.el.classList.remove("flash");
+    void entry.el.offsetWidth;
+    entry.el.classList.add("flash");
+  }
+
+  function runSearch() {
+    var query = input.value.trim().toLowerCase();
+    if (!query) {
+      closeResults();
+      return;
+    }
+    var words = query.split(/\s+/);
+    matches = entries
+      .map(function (entry, order) { return { entry: entry, score: score(entry, words), order: order }; })
+      .filter(function (m) { return m.score > 0; })
+      .sort(function (a, b) { return b.score - a.score || a.order - b.order; })
+      .slice(0, MaxResults);
+
+    nav.classList.add("searching");
+    resultsBox.hidden = false;
+    input.setAttribute("aria-expanded", "true");
+    resultsBox.innerHTML = "";
+
+    if (matches.length === 0) {
+      resultsBox.innerHTML = '<div class="empty">No results for “' + escapeHtml(input.value.trim()) + '”</div>';
+      return;
+    }
+    matches.forEach(function (m, i) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "result";
+      button.setAttribute("role", "option");
+      button.innerHTML =
+        '<span class="r-title">' + highlight(m.entry.title, words) + "</span>" +
+        '<span class="r-where">' + escapeHtml(m.entry.where) + "</span>" +
+        (m.entry.text ? '<span class="r-snippet">' + highlight(snippet(m.entry.text, words[0]), words) + "</span>" : "");
+      button.addEventListener("mousedown", function (event) { event.preventDefault(); });
+      button.addEventListener("click", function () { jumpTo(m.entry); });
+      resultsBox.appendChild(button);
+    });
+    select(0);
+  }
+
+  input.addEventListener("input", runSearch);
+  input.addEventListener("focus", function () { if (input.value.trim()) runSearch(); });
+  input.addEventListener("blur", function () { setTimeout(closeResults, 120); });
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "ArrowDown" && matches.length) {
+      event.preventDefault();
+      select((selected + 1) % matches.length);
+    } else if (event.key === "ArrowUp" && matches.length) {
+      event.preventDefault();
+      select((selected - 1 + matches.length) % matches.length);
+    } else if (event.key === "Enter" && matches.length && !resultsBox.hidden) {
+      event.preventDefault();
+      jumpTo(matches[selected].entry);
+    } else if (event.key === "Escape") {
+      input.value = "";
+      closeResults();
+      input.blur();
+    }
+  });
+  document.addEventListener("keydown", function (event) {
+    var typing = /input|textarea|select/i.test(document.activeElement.tagName);
+    var shortcut = event.key === "/" || (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey));
+    if (shortcut && !typing) {
+      event.preventDefault();
+      input.focus();
+      input.select();
+    }
+  });
+
+  var links = Array.prototype.slice.call(document.querySelectorAll(".toc a"));
+  var sections = links.map(function (a) { return document.querySelector(a.getAttribute("href")); });
+  function markActive() {
+    var current = 0;
+    sections.forEach(function (section, i) {
+      if (section && section.getBoundingClientRect().top < 160) current = i;
+    });
+    links.forEach(function (a, i) {
+      var active = i === current;
+      a.classList.toggle("active", active);
+      if (active && window.matchMedia("(max-width: 860px)").matches) {
+        a.scrollIntoView({ block: "nearest", inline: "nearest" });
+      }
+    });
+  }
+  document.addEventListener("scroll", markActive, { passive: true });
+  markActive();
+})();
+</script>
+</body>
+</html>
